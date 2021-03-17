@@ -3,6 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import MicRecorder from 'mic-recorder-to-mp3';
+
+const Mp3Recorder = new MicRecorder({ bitRate: 128 });
+
+this.state = {
+  isRecording: false,
+  blobURL: '',
+  isBLocked: false,
+}
 
 ReactDOM.render(
   <React.StrictMode>

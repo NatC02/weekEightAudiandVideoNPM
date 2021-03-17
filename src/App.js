@@ -1,23 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.scss";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1 className="text">
+          {" "}
+          Phase 1: Once the button below is clicked, it will gather your video
+          and audio. It will output an mp3 video and a mp4 video that is 30
+          seconds long.
+        </h1>
+        <button className="btn customButton">Click here to gather</button>
       </header>
     </div>
   );

@@ -1,26 +1,49 @@
 import "./App.scss";
 import MicRecorder from "mic-recorder-to-mp3";
 import React from "react";
+import VideoRecorder from "recordrtc";
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
+
+const Mp4Recorder = new VidRecorder( stream, {type: 'video'});
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isRecording: false,
-      blobURL: "",
-      isBlocked: false,
+      isAudioRecording: false,
+      blobAudioURL: "",
+      isAudioBlocked: false,
+      isVideoRecording: false,
+      blobVideoURL: "",
+      isVideoBlocked: false,
     };
   }
 
-  start = () => {
-    if (this.state.isBlocked) {
-      console.log("Permission Denied");
+  startVideo = () => {
+    if (this.state.isVideoBlocked) {
+      console.log("Permission Video Granted");
     } else {
-      Mp3Recorder.start()
+      Mp4Recorder.startVideo() {
         .then(() => {
-          this.setState({ isRecording: true });
+          this.setState ({isVideoRecording: true});
+        })
+        .catch((e) => console.log(e));
+      }
+    }
+  }
+
+  startVideo = () => {
+    
+  }
+
+  startAudio = () => {
+    if (this.state.isAudioBlocked) {
+      console.log("Permission Audio Denied");
+    } else {
+      Mp3Recorder.startAudio()
+        .then(() => {
+          this.setState({ isAudioRecording: true });
         })
         .catch((e) => console.error(e));
     }
@@ -40,8 +63,8 @@ class App extends React.Component {
         const player = new Audio(URL.createObjectURL(file));
         player.play();
 
-        const blobURL = URL.createObjectURL(blob);
-        this.setState({ blobURL, isRecording: false });
+        const blobAudioURL = URL.createObjectURL(blob);
+        this.setState({ blobAudioURL, isAudioRecording: false });
       })
       .catch((e) => console.log(e));
   };
@@ -50,12 +73,12 @@ class App extends React.Component {
     navigator.getUserMedia(
       { audio: true },
       () => {
-        console.log("Permission Granted");
-        this.setState({ isBlocked: false });
+        console.log("Permission Audio Granted");
+        this.setState({ isAudioBlocked: false });
       },
       () => {
-        console.log("Permission Denied");
-        this.setState({ isBlocked: true });
+        console.log("Permission Audio Denied");
+        this.setState({ isAudioBlocked: true });
       }
     );
   }
@@ -72,32 +95,32 @@ class App extends React.Component {
           </h1>
           <button
             className="btnAudioVideo customButton"
-            onClick={this.start}
-            disabled={this.state.isRecording}
+            onClick={this.startAudio}
+            disabled={this.state.isAudioRecording}
           >
             Click here to gather audio
           </button>
           <button
             className="btnAudioVideo customButton"
             onClick={this.stop}
-            disabled={!this.state.isRecording}
+            disabled={!this.state.isAudioRecording}
           >
             Click here to stop gathering audio
           </button>
 
-          <audio src={this.state.blobURL} controls="controls" />
+          <audio src={this.state.blobAudioURL} controls="controls" />
 
           <button
             className="btnAudioVideo customButton"
-            onClick={this.start}
-            disabled={this.state.isRecording}
+            onClick={this.startVideo}
+            disabled={this.state.isAudioRecording}
           >
             Click here to gather video
           </button>
           <button
             className="btnAudioVideo customButton"
-            onClick={this.start}
-            disabled={this.state.isRecording}
+            onClick={this.startVideo}
+            disabled={this.state.isAudioRecording}
           >
             Click here to stop gathering video
           </button>

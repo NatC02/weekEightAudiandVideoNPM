@@ -1,10 +1,42 @@
 import "./App.scss";
 import MicRecorder from "mic-recorder-to-mp3";
-import React, {useState} from "react";
+import React /*, { useState } commented out hook*/ from "react";
 
-function Video() {
-  const [videoRecording, isVideoRecording] =
-}
+/* implementing the reacts hook using react hooks documentation
+
+I was trying to implement it :/
+
+function App() {
+  const [videoRecording, setVideoRecording] = useState(false);
+
+  const HEIGHT = 500;
+  const WIDTH = 500;
+
+  const startVideo = () => {
+    setVideoRecording(true);
+    navigator.getUserMedia(
+      {
+        video: true,
+      },
+      (stream) => {
+        let video = document.getElementsByClassName("app__videoFeed")[0];
+        if (video) {
+          video.srcObject = stream;
+        }
+      },
+      (err) => console.error(err)
+    );
+  };
+
+  const stopVideo = () => {
+    setVideoRecording(false);
+    let video = document.getElementsByClassName("app__videoFeed")[0];
+    video.srcObject.getTracks()[0].stop();
+  };
+
+  */
+
+//below is the old way of doing react
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 class App extends React.Component {
@@ -17,11 +49,11 @@ class App extends React.Component {
     };
   }
 
-  startAudio = () => {
+  start = () => {
     if (this.state.isAudioBlocked) {
       console.log("Permission Audio Denied");
     } else {
-      Mp3Recorder.startAudio()
+      Mp3Recorder.start()
         .then(() => {
           this.setState({ isAudioRecording: true });
         })
@@ -29,8 +61,8 @@ class App extends React.Component {
     }
   };
 
-  stopAudio = () => {
-    Mp3Recorder.stopAudio()
+  stop = () => {
+    Mp3Recorder.stop()
       .getMp3()
       .then(([buffer, blob]) => {
         //This will gather the audio and immediately play it once it is stopped
@@ -69,20 +101,19 @@ class App extends React.Component {
         <header className="App-header">
           <h1 className="text">
             {" "}
-            Phase 1: Once the button below is clicked, it will gather your video
-            and audio. It will output an mp3 video and a mp4 video that is 30
-            seconds long.
+            Phase 1: Once the button below is clicked, it will gather your
+            audio. It will output an mp3 file that is as long as you recorded.
           </h1>
           <button
             className="btnAudioVideo customButton"
-            onClick={this.startAudio}
+            onClick={this.start}
             disabled={this.state.isAudioRecording}
           >
             Click here to gather audio
           </button>
           <button
             className="btnAudioVideo customButton"
-            onClick={this.stopAudio}
+            onClick={this.stop}
             disabled={!this.state.isAudioRecording}
           >
             Click here to stop gathering audio
@@ -90,32 +121,40 @@ class App extends React.Component {
 
           <audio src={this.state.blobAudioURL} controls="controls" />
 
-          <div className="app__container">
-				<video
-					height={HEIGHT}
-					width={WIDTH}
-					muted
-					autoPlay
-					className="app__videoFeed"
-				></video>
-        </div>
-
-          <button
-            className="btnAudioVideo customButton"
-            onClick={this.startVideo}
-            disabled={this.state.isAudioRecording}
-          >
-            Click here to gather video
-          </button>
-          <button
-            className="btnAudioVideo customButton"
-            onClick={this.startVideo}
-            disabled={this.state.isAudioRecording}
-          >
-            Click here to stop gathering video
-          </button>
+          {/* Commented out because I was trying to combine react class component with react hooks
+          <div>
+            <video
+              height={HEIGHT}
+              width={WIDTH}
+              muted
+              autoPlay
+              className="app__videoFeed"
+            >
+              Your video!
+            </video>
+          </div>
+          <div>
+            {videoRecording ? (
+              <button
+                className="btnAudioVideo customButton"
+                onClick={startVideo}
+              >
+                Click here to gather video
+              </button>
+            ) : (
+              <button
+                className="btnAudioVideo customButton"
+                onClick={stopVideo}
+              >
+                Click here to stop gathering video
+              </button>
+            )}
+          </div> 
+            */}
         </header>
       </div>
     );
   }
 }
+
+export default App;

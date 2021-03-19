@@ -1,12 +1,12 @@
 import "./App.scss";
 import MicRecorder from "mic-recorder-to-mp3";
-import React from "react";
-import VideoRecorder from "recordrtc";
+import React, {useState} from "react";
+
+function Video() {
+  const [videoRecording, isVideoRecording] =
+}
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
-
-const Mp4Recorder = new VidRecorder( stream, {type: 'video'});
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -14,27 +14,7 @@ class App extends React.Component {
       isAudioRecording: false,
       blobAudioURL: "",
       isAudioBlocked: false,
-      isVideoRecording: false,
-      blobVideoURL: "",
-      isVideoBlocked: false,
     };
-  }
-
-  startVideo = () => {
-    if (this.state.isVideoBlocked) {
-      console.log("Permission Video Granted");
-    } else {
-      Mp4Recorder.startVideo() {
-        .then(() => {
-          this.setState ({isVideoRecording: true});
-        })
-        .catch((e) => console.log(e));
-      }
-    }
-  }
-
-  startVideo = () => {
-    
   }
 
   startAudio = () => {
@@ -49,19 +29,19 @@ class App extends React.Component {
     }
   };
 
-  stop = () => {
-    Mp3Recorder.stop()
+  stopAudio = () => {
+    Mp3Recorder.stopAudio()
       .getMp3()
       .then(([buffer, blob]) => {
         //This will gather the audio and immediately play it once it is stopped
 
-        const file = new File(buffer, "me-at-thevoice.mp3", {
+        const fileAudio = new File(buffer, "me-at-thevoice.mp3", {
           type: blob.type,
           lastModified: Date.now(),
         });
 
-        const player = new Audio(URL.createObjectURL(file));
-        player.play();
+        const playerAudio = new Audio(URL.createObjectURL(fileAudio));
+        playerAudio.play();
 
         const blobAudioURL = URL.createObjectURL(blob);
         this.setState({ blobAudioURL, isAudioRecording: false });
@@ -102,13 +82,23 @@ class App extends React.Component {
           </button>
           <button
             className="btnAudioVideo customButton"
-            onClick={this.stop}
+            onClick={this.stopAudio}
             disabled={!this.state.isAudioRecording}
           >
             Click here to stop gathering audio
           </button>
 
           <audio src={this.state.blobAudioURL} controls="controls" />
+
+          <div className="app__container">
+				<video
+					height={HEIGHT}
+					width={WIDTH}
+					muted
+					autoPlay
+					className="app__videoFeed"
+				></video>
+        </div>
 
           <button
             className="btnAudioVideo customButton"
@@ -129,5 +119,3 @@ class App extends React.Component {
     );
   }
 }
-
-export default App;

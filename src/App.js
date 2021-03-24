@@ -1,6 +1,8 @@
 import "./App.scss";
 import MicRecorder from "mic-recorder-to-mp3";
-import React /*, { useState } commented out hook*/ from "react";
+import React, {
+  createElement /*, { useState } commented out hook */,
+} from "react";
 
 /* implementing the reacts hook using react hooks documentation
 
@@ -46,8 +48,16 @@ class App extends React.Component {
       isAudioRecording: false,
       blobAudioURL: "",
       isAudioBlocked: false,
+      isAudioToggleOn: true,
+      isVideoRecording: false,
+      blobVideoURl: "",
+      isVideoblocked: false,
     };
+
+    this.handleClick = this.handleClick.bind(this);
   }
+
+  //Starting audio
 
   start = () => {
     if (this.state.isAudioBlocked) {
@@ -60,6 +70,8 @@ class App extends React.Component {
         .catch((e) => console.error(e));
     }
   };
+
+  //Stopping audio
 
   stop = () => {
     Mp3Recorder.stop()
@@ -93,6 +105,14 @@ class App extends React.Component {
         this.setState({ isAudioBlocked: true });
       }
     );
+  }
+
+  //Toggle audio text message
+
+  handleClick() {
+    this.setState((state) => ({
+      isAudioToggleOn: !state.isAudioToggleOn,
+    }));
   }
 
   render() {

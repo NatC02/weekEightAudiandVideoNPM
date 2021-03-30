@@ -1,44 +1,6 @@
 import "./App.scss";
 import MicRecorder from "mic-recorder-to-mp3";
-import React, {
-  createElement /*, { useState } commented out hook */,
-} from "react";
-
-/* implementing the reacts hook using react hooks documentation
-
-I was trying to implement it :/
-
-function App() {
-  const [videoRecording, setVideoRecording] = useState(false);
-
-  const HEIGHT = 500;
-  const WIDTH = 500;
-
-  const startVideo = () => {
-    setVideoRecording(true);
-    navigator.getUserMedia(
-      {
-        video: true,
-      },
-      (stream) => {
-        let video = document.getElementsByClassName("app__videoFeed")[0];
-        if (video) {
-          video.srcObject = stream;
-        }
-      },
-      (err) => console.error(err)
-    );
-  };
-
-  const stopVideo = () => {
-    setVideoRecording(false);
-    let video = document.getElementsByClassName("app__videoFeed")[0];
-    video.srcObject.getTracks()[0].stop();
-  };
-
-  */
-
-//below is the old way of doing react
+import React, { createElement } from "react";
 
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 class App extends React.Component {
@@ -49,12 +11,7 @@ class App extends React.Component {
       blobAudioURL: "",
       isAudioBlocked: false,
       isAudioToggleOn: true,
-      isVideoRecording: false,
-      blobVideoURl: "",
-      isVideoblocked: false,
     };
-
-    this.handleClick = this.handleClick.bind(this);
   }
 
   //Starting audio
@@ -107,14 +64,6 @@ class App extends React.Component {
     );
   }
 
-  //Toggle audio text message
-
-  handleClick() {
-    this.setState((state) => ({
-      isAudioToggleOn: !state.isAudioToggleOn,
-    }));
-  }
-
   render() {
     return (
       <div className="App">
@@ -140,37 +89,6 @@ class App extends React.Component {
           </button>
 
           <audio src={this.state.blobAudioURL} controls="controls" />
-
-          {/* Commented out because I was trying to combine react class component with react hooks
-          <div>
-            <video
-              height={HEIGHT}
-              width={WIDTH}
-              muted
-              autoPlay
-              className="app__videoFeed"
-            >
-              Your video!
-            </video>
-          </div>
-          <div>
-            {videoRecording ? (
-              <button
-                className="btnAudioVideo customButton"
-                onClick={startVideo}
-              >
-                Click here to gather video
-              </button>
-            ) : (
-              <button
-                className="btnAudioVideo customButton"
-                onClick={stopVideo}
-              >
-                Click here to stop gathering video
-              </button>
-            )}
-          </div> 
-            */}
         </header>
       </div>
     );
